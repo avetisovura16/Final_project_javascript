@@ -1,0 +1,20 @@
+.superproducts {
+  background-color: rgb(145, 173, 206);
+  width: 600px;
+} 
+
+
+
+
+
+
+#PageNumber {
+    margin: 0;
+    width: 6px;
+}
+
+.things {
+    display: flex;
+flex-direction: row;
+gap: 5px;
+}
