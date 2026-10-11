@@ -1,6 +1,6 @@
 .superproducts {
-  background-color: rgb(145, 173, 206);
-  width: 600px;
+  background-color: #b8c8dc;
+
 } 
 
 
@@ -17,4 +17,38 @@
     display: flex;
 flex-direction: row;
 gap: 5px;
+}
+
+#productCard {
+    width:250px;
+    flex-wrap: wrap;
+    background-color: #91adce;
+    padding: 7px;
+    border: 4px solid #6c88a9;
+    border-radius: 10px;
+    gap: 10px;
+
+}
+
+li {
+    width: 170px;
+    list-style: none;
+}
+
+
+#productImage{
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  object-fit: cover;
+}
+
+ul {
+    display: flex;
+    gap: 120px;
+    flex-wrap: wrap;
+}
+
+#productDesc {
+    width: 200px;
 }

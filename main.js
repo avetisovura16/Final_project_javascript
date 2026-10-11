@@ -90,7 +90,7 @@ buttonPrev.disabled = true
   });
 
 
-  
+
 
  
   pteg.style.display = `none`;
@@ -140,7 +140,29 @@ buttonPrev.disabled = true
     diva.innerHTML = ``;
     products.forEach((element) => {
       const li = document.createElement(`li`);
-      li.textContent = `${element.id} ${element.title} $ ${element.price}`;
+
+
+      
+      li.innerHTML = `
+
+      <div id="productCard">
+
+      <img id="productImage" src="${element.thumbnail}" alt="${element.title}">
+      <p> ${element.title} </p>
+      <p> $ ${element.price} </p>
+      <P id="productDesc"> ${element.description}
+
+
+      </div>
+      
+      
+      
+      `
+      
+      
+      
+      
+      
       diva.append(li);
     });
   }
