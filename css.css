@@ -52,3 +52,25 @@ ul {
 #productDesc {
     width: 200px;
 }
+
+
+
+#titleProduct {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+p {
+    margin: 0;
+}
+
+#detailsOfProduct {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+
+}
+
+#imageDetailProduct {
+    width: 300px;
+}

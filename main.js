@@ -1,11 +1,11 @@
 async function diva() {
  const pteg = document.getElementById(`pteg`);
 pteg.style.display = `none`
-
+  const details = document.querySelector(`.details`)
 const loadtext = document.getElementById(`loadText`)
 loadtext.style.display = `block`
 
-
+const superproducts = document.querySelector(`.superproducts`)
 const buttonNext = document.getElementById(`button_next`);
 const buttonPrev = document.getElementById(`button_prev`);
 const pageNumber = document.getElementById(`PageNumber`)
@@ -27,8 +27,8 @@ buttonPrev.disabled = true
 
   
   const resFull = await fetch(`https://dummyjson.com/products?limit=0`);
-  const dataFu = await resFull.json();
-  fullProductList = dataFu.products;
+  const dataFull = await resFull.json();
+   fullProductList = dataFull.products;
 
 
   loadtext.style.display = `none`
@@ -157,16 +157,49 @@ buttonPrev.disabled = true
       
       
       
-      `
+      `     
       
+      li.addEventListener(`click`, () => {
+      superproducts.style.display = `none`
+      const detailPage = document.querySelector(`#detailsOfProduct`)
+    
+      details.style.display = `block`
+
+
+
+
+      detailPage.innerHTML = `
       
+      <img id="imageDetailProduct" src="${element.thumbnail}" alt="${element.title}">
+      <p id="titleProduct"> ${element.title} </p>
+      <p> $ ${element.price} </p>
+      <p> category : ${element.category} </p>
+      <p id="stock"> ${element.stock > 0 ? 'In Stock' : 'None Left'} </p>
+      <P> ${element.description}
+      <p> tags : ${element.tags} </p>
+
+            
+
+  `
+
       
+      })
       
+   
+      const buttonBack = document.getElementById(`goBackButton`)
+      buttonBack.addEventListener(`click`, () => {
+        details.style.display = `none`
+        superproducts.style.display = `block`
+      })
       
       diva.append(li);
+
     });
   }
 }
+
+
+
 
 
 
