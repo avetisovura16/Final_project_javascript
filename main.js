@@ -9,7 +9,7 @@ const superproducts = document.querySelector(`.superproducts`)
 const buttonNext = document.getElementById(`button_next`);
 const buttonPrev = document.getElementById(`button_prev`);
 const pageNumber = document.getElementById(`PageNumber`)
-
+const diva = document.getElementById(`ourproducts`);
 
 buttonPrev.disabled = true
 
@@ -20,20 +20,38 @@ buttonPrev.disabled = true
   let product = [];
   let fullProductList = []
 
-  const res = await fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`);
-  const data = await res.json();
+
+  try {
+      const res = await fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`);
+
+      if(!res.ok) throw new Error(`responce is wrong`)
+
+          const data = await res.json();
   product = data.products;
 
+        const resFull = await fetch(`https://dummyjson.com/products?limit=0`);
 
-  
-  const resFull = await fetch(`https://dummyjson.com/products?limit=0`);
-  const dataFull = await resFull.json();
+      if(!resFull.ok) throw new Error(`responce is wrong`)
+
+
+      const dataFull = await resFull.json();
    fullProductList = dataFull.products;
+
+  } catch {
+    console.error(`error`)
+    loadtext.style.display = `none`
+    diva.innerHTML = `
+    <li> no internet connection. </li>
+    `
+    return
+  }
+
+
 
 
   loadtext.style.display = `none`
 
-  const diva = document.getElementById(`ourproducts`);
+  
 
   render(product);
 
@@ -136,71 +154,22 @@ buttonPrev.disabled = true
     }
   });
 
-  function render(products) {
-    diva.innerHTML = ``;
-    products.forEach((element) => {
-      const li = document.createElement(`li`);
-
-
-      
-      li.innerHTML = `
-
-      <div id="productCard">
-
-      <img id="productImage" src="${element.thumbnail}" alt="${element.title}">
-      <p> ${element.title} </p>
-      <p> $ ${element.price} </p>
-      <P id="productDesc"> ${element.description}
-
-
-      </div>
-      
-      
-      
-      `     
-      
-      li.addEventListener(`click`, () => {
-      superproducts.style.display = `none`
-      const detailPage = document.querySelector(`#detailsOfProduct`)
-    
-      details.style.display = `block`
 
 
 
 
-      detailPage.innerHTML = `
-      
-      <img id="imageDetailProduct" src="${element.thumbnail}" alt="${element.title}">
-      <p id="titleProduct"> ${element.title} </p>
-      <p> $ ${element.price} </p>
-      <p> category : ${element.category} </p>
-      <p id="stock"> ${element.stock > 0 ? 'In Stock' : 'None Left'} </p>
-      <P> ${element.description}
-      <p> tags : ${element.tags} </p>
 
-            
 
-  `
 
-      
-      })
-      
-   
+}
+
+
+
       const buttonBack = document.getElementById(`goBackButton`)
       buttonBack.addEventListener(`click`, () => {
         details.style.display = `none`
         superproducts.style.display = `block`
       })
-      
-      diva.append(li);
-
-    });
-  }
-}
-
-
-
-
 
 
 
