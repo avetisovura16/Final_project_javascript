@@ -1,6 +1,8 @@
   function render(products) {
 
 
+
+
 const diva = document.getElementById(`ourproducts`);
 const superproducts = document.querySelector(`.superproducts`)
 const details = document.querySelector(`.details`)
@@ -43,20 +45,30 @@ const details = document.querySelector(`.details`)
       <p> $ ${element.price} </p>
       <p> category : ${element.category} </p>
       <p id="stock"> ${element.stock > 0 ? 'In Stock' : 'None Left'} </p>
-      <P> ${element.description}
+      <P> ${element.description} </p>
       <p> tags : ${element.tags} </p>
+            <button id="BuyButton">Buy This Product</button>
+                    <p id="addedToCart" style="display: none;">added to cart</p>
 
             
 
   `
 
-      
-      })
-      
-   
 
-      
-      diva.append(li);
+      const ptegCart = detailPage.querySelector(`#addedToCart`);
+      const buyBtn = detailPage.querySelector(`#BuyButton`);
 
-    });
-  }
+
+      buyBtn.addEventListener(`click`, () => {
+         cart.push(element);
+         localStorage.setItem('myCart', JSON.stringify(cart));
+         ptegCart.style.display = `block`;
+      }); 
+
+    }); 
+      
+  
+    diva.append(li);
+
+  }); 
+}

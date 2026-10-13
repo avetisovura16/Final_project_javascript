@@ -1,4 +1,10 @@
+let cart = JSON.parse(localStorage.getItem('myCart')) || []
+
+
+
 async function diva() {
+ 
+
  const pteg = document.getElementById(`pteg`);
 pteg.style.display = `none`
   const details = document.querySelector(`.details`)
@@ -162,16 +168,93 @@ buttonPrev.disabled = true
 
 
 }
-
-
+const superproducts = document.querySelector(`.superproducts`)
+  const details = document.querySelector(`.details`)
+        const cartButton = document.getElementById(`cartButton`)
 
       const buttonBack = document.getElementById(`goBackButton`)
       buttonBack.addEventListener(`click`, () => {
         details.style.display = `none`
         superproducts.style.display = `block`
+        
+                cartButton.style.display=`block`
       })
 
 
+
+
+            const cartSurface = document.querySelector(`.cartSurface`)
+
+      const CartUl = document.getElementById(`UlProducts`)
+      const cartButtonBack = document.getElementById(`CartBackBtn`)
+
+
+        
+
+
+
+      cartButton.addEventListener(`click`, () => {
+      superproducts.style.display = `none`
+      
+      
+    
+      cartSurface.style.display = `block`
+
+                  if(cartSurface.style.display === `block`) {
+        cartButton.style.display=`none`
+      } else {
+        cartButton.style.display=`block`
+      }
+
+
+
+
+      if(details.style.display === `block`) {
+        details.style.display = `none`
+        cartSurface.style.display = `block`
+        
+      } 
+
+
+
+
+
+  const cartUl = document.getElementById(`UlProducts`);
+  cartUl.innerHTML = ``; 
+
+  cart.forEach((element) => {
+    const CartLi = document.createElement(`li`);
+    CartLi.textContent = ` ${element.title} —  $ ${element.price} `;
+    cartUl.append(CartLi);
+  });
+});
+      
+
+      
+
+
+
+      cartButtonBack.addEventListener(`click`, () => {
+              superproducts.style.display = `block`
+      
+    
+      cartSurface.style.display = `none`
+              cartButton.style.display=`block`
+
+      
+
+
+
+
+      })
+
+
+
+
+
+
+
+      
 
 
 
