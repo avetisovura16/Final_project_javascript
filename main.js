@@ -16,12 +16,14 @@ const buttonNext = document.getElementById(`button_next`);
 const buttonPrev = document.getElementById(`button_prev`);
 const pageNumber = document.getElementById(`PageNumber`)
 const diva = document.getElementById(`ourproducts`);
+const comeback = document.getElementById(`comeback`);
 
 buttonPrev.disabled = true
+comeback.disabled = true
 
 
   let skip = 0; 
-  let limit = 30; 
+  let limit = 12; 
   let currectpage = 1;
   let product = [];
   let fullProductList = []
@@ -53,6 +55,8 @@ buttonPrev.disabled = true
   }
 
 
+let pageAmount = Math.ceil(fullProductList.length / 12)
+console.log(pageAmount)
 
 
   loadtext.style.display = `none`
@@ -121,8 +125,13 @@ buttonPrev.disabled = true
 
 
 
+
+
   buttonNext.addEventListener(`click`, async () => {
-    skip = skip + 30;
+    skip = skip + 12;
+
+    
+
 
     const res = await fetch(
       `https://dummyjson.com/products?limit=${limit}&skip=${skip}`,
@@ -134,14 +143,28 @@ buttonPrev.disabled = true
 
     if (currectpage > 1) {
       buttonPrev.disabled = false;
+    } else if(currectpage === pageAmount) {
+      buttonNext.disabled = true
     }
+
+    if(currectpage === pageAmount) {
+  buttonNext.disabled = true
+} else {
+    buttonNext.disabled = false
+}
+
+          if (currectpage > 1) {
+        comeback.disabled = false;
+
+      } 
+
 
     render(product);
   });
 
   buttonPrev.addEventListener(`click`, async () => {
     if (currectpage > 1) {
-      skip = skip - 30;
+      skip = skip - 12;
 
       const res = await fetch(
         `https://dummyjson.com/products?limit=${limit}&skip=${skip}`,
@@ -154,7 +177,14 @@ buttonPrev.disabled = true
 
       if (currectpage === 1) {
         buttonPrev.disabled = true;
-      }
+
+      } 
+
+                if (currectpage > 1) {
+        comeback.disabled = false;
+
+      } 
+
 
       render(product);
     }
@@ -162,6 +192,33 @@ buttonPrev.disabled = true
 
 
 
+
+
+comeback.addEventListener(`click`, async () => {
+  skip = 0;
+  currectpage = 1;
+  pageNumber.textContent = `1`;
+
+  const res = await fetch(
+    `https://dummyjson.com/products?limit=${limit}&skip=${skip}`
+  );
+
+  const data = await res.json();
+  product = data.products;
+
+  render(product);
+
+  buttonPrev.disabled = true;
+  buttonNext.disabled = false;
+  comeback.disabled = true
+
+
+
+
+      
+
+
+});
 
 
 
@@ -227,6 +284,10 @@ const superproducts = document.querySelector(`.superproducts`)
     CartLi.textContent = ` ${element.title} —  $ ${element.price} `;
     cartUl.append(CartLi);
   });
+
+  
+  updateCartAmount()
+  TotalRender()
 });
       
 
@@ -241,14 +302,7 @@ const superproducts = document.querySelector(`.superproducts`)
       cartSurface.style.display = `none`
               cartButton.style.display=`block`
 
-      
-
-
-
-
       })
-
-
 
 
 
@@ -261,3 +315,28 @@ const superproducts = document.querySelector(`.superproducts`)
 
 
 diva();
+
+
+
+
+function updateCartAmount() {
+      const AmountSign = document.getElementById(`CartAmount`)
+      const AmountCart = cart.length
+      AmountSign.textContent =`Amount : ${AmountCart}`
+}
+
+const CartTotal = document.getElementById(`CartTotal`)
+let total = 0
+function TotalRender() {
+  total = 0
+  for(let i = 0; i < cart.length;i++) {
+
+    total = total + cart[i].price
+
+    
+
+
+  }
+
+      CartTotal.textContent = `total = $${total}`
+}

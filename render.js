@@ -20,6 +20,9 @@ const details = document.querySelector(`.details`)
       <img id="productImage" src="${element.thumbnail}" alt="${element.title}">
       <p> ${element.title} </p>
       <p> $ ${element.price} </p>
+      <p> % ${element.discountPercentage} </p>
+      <p>  ⭐ ${element.rating} </p>
+
       <P id="productDesc"> ${element.description}
 
 
@@ -62,6 +65,8 @@ const details = document.querySelector(`.details`)
       buyBtn.addEventListener(`click`, () => {
          cart.push(element);
          localStorage.setItem('myCart', JSON.stringify(cart));
+         updateCartAmount()
+         TotalRender()
          ptegCart.style.display = `block`;
       }); 
 
