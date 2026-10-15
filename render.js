@@ -109,3 +109,27 @@ async function showProductDetails(id) {
     });
   }
 }
+
+
+
+
+function Theme() {
+  const button = document.getElementById('statusMod')
+
+  const savedTheme = localStorage.getItem('isDarkTheme') === 'true'
+
+  if (savedTheme) {
+    document.body.classList.add('dark')
+    button.textContent = '☀'
+  } else {
+    button.textContent = '⏾'
+  }
+
+  button.addEventListener('click', () => {
+    const isDark = document.body.classList.toggle('dark')
+    button.textContent = isDark ? '☀' : '⏾'
+    localStorage.setItem('isDarkTheme', isDark)
+  })
+}
+
+Theme()

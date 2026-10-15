@@ -72,7 +72,28 @@ comeback.disabled = true
 
 let pageAmount = Math.ceil(fullProductList.length / 12)
 
+  let displayList = fullProductList.slice()
 
+  const sortSelect = document.getElementById(`sortOrder`)
+
+  sortSelect.addEventListener(`change`, () => {
+    if (sortSelect.value === `asc`) {
+      displayList.sort((a, b) => a.price - b.price)
+    } else if (sortSelect.value === `desc`) {
+      displayList.sort((a, b) => b.price - a.price)
+    } else {
+      displayList = fullProductList.slice()
+    }
+
+    skip = 0
+    currectpage = 1
+    pageNumber.textContent = `${currectpage} / ${pageAmount}`
+    buttonPrev.disabled = true
+    buttonNext.disabled = false
+    comeback.disabled = true
+
+    render(displayList.slice(skip, skip + limit))
+  })
 
   loadtext.style.display = `none`
 
@@ -127,7 +148,7 @@ try {
 } catch (error) {
   console.error(error);
   pteg.style.display = `none`;
-  LittleShop.innerHTML = `<li>Search failed. Please try again.</li>`;
+  productsList.innerHTML = `<li>Search failed. Please try again.</li>`;
 }
 
 
@@ -158,97 +179,48 @@ try {
 
 
 
-  buttonNext.addEventListener(`click`, async () => {
-    skip = skip + 12;
+  buttonNext.addEventListener(`click`, () => {
+    if (currectpage >= pageAmount) return
 
-    
-
-
-    const res = await fetch(
-      `https://dummyjson.com/products?limit=${limit}&skip=${skip}`,
-    );
-    const data = await res.json();
-    product = data.products;
-    currectpage = currectpage + 1;
+    skip = skip + limit
+    currectpage = currectpage + 1
     pageNumber.textContent = `${currectpage} / ${pageAmount}`
 
-    if (currectpage > 1) {
-      buttonPrev.disabled = false;
-    } else if(currectpage === pageAmount) {
-      buttonNext.disabled = true
-    }
+    buttonPrev.disabled = currectpage === 1
+    comeback.disabled = currectpage === 1
+    buttonNext.disabled = currectpage === pageAmount
 
-    if(currectpage === pageAmount) {
-  buttonNext.disabled = true
-} else {
-    buttonNext.disabled = false
-}
-
-          if (currectpage > 1) {
-        comeback.disabled = false;
-
-      } 
-
-
-    render(product);
+    render(displayList.slice(skip, skip + limit))
   });
 
-  buttonPrev.addEventListener(`click`, async () => {
-    if (currectpage > 1) {
-      skip = skip - 12;
+  buttonPrev.addEventListener(`click`, () => {
+    if (currectpage <= 1) return
 
-      const res = await fetch(
-        `https://dummyjson.com/products?limit=${limit}&skip=${skip}`,
-      );
-      const data = await res.json();
-      product = data.products;
-      currectpage = currectpage - 1;
+    skip = skip - limit
+    currectpage = currectpage - 1
     pageNumber.textContent = `${currectpage} / ${pageAmount}`
 
+    buttonPrev.disabled = currectpage === 1
+    comeback.disabled = currectpage === 1
+    buttonNext.disabled = currectpage === pageAmount
 
-      if (currectpage === 1) {
-        buttonPrev.disabled = true;
-
-      } 
-
-                if (currectpage > 1) {
-        comeback.disabled = false;
-
-      } 
-
-
-      render(product);
-    }
+    render(displayList.slice(skip, skip + limit))
   });
 
 
 
 
 
-comeback.addEventListener(`click`, async () => {
+comeback.addEventListener(`click`, () => {
   skip = 0;
   currectpage = 1;
     pageNumber.textContent = `${currectpage} / ${pageAmount}`
 
-  const res = await fetch(
-    `https://dummyjson.com/products?limit=${limit}&skip=${skip}`
-  );
-
-  const data = await res.json();
-  product = data.products;
-
-  render(product);
+  render(displayList.slice(skip, skip + limit));
 
   buttonPrev.disabled = true;
   buttonNext.disabled = false;
   comeback.disabled = true
-
-
-
-
-      
-
-
 });
 
 

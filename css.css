@@ -104,7 +104,7 @@ p {
 }
 
 #UlProducts {
-        display: flex;
+    display: flex;
     gap: 20px;
     flex-wrap: wrap;
     
@@ -115,6 +115,13 @@ p {
     
 }
 
+#statusMod {
+    display: flex;
+    position: absolute;
+    right: 10px;
+}
+
+
 .divList {
     background-color: #92aece;
     width: 1450px;
@@ -122,3 +129,28 @@ p {
     padding: 20px;
 
 }
+
+body.dark {
+    background-color: #161e29;
+    color: #c9d6e5;
+}
+
+body.dark #productCard,
+body.dark .productCard,
+body.dark .divList {
+    background-color: #0f1620;
+    border-color: #2b3a4d;
+}
+
+body.dark #imageDetailProduct {
+    border-color: #2b3a4d;
+}
+
+body.dark button,
+body.dark input,
+body.dark select {
+    background-color: #1e2836;
+    color: #c9d6e5;
+    border: 1px solid #6c88a9;
+}
+
