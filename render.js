@@ -1,79 +1,111 @@
-  function render(products) {
 
+function render(products) {
+  const LittleShop = document.getElementById('ourproducts');
 
+  LittleShop.innerHTML = '';
 
+  products.forEach((element) => {
+    const li = document.createElement('li');
 
-const diva = document.getElementById(`ourproducts`);
-const superproducts = document.querySelector(`.superproducts`)
-const details = document.querySelector(`.details`)
-    
-    diva.innerHTML = ``;
-    products.forEach((element) => {
-      const li = document.createElement(`li`);
-
-
-      
-      li.innerHTML = `
-
+    li.innerHTML = `
       <div id="productCard">
-
-      <img id="productImage" src="${element.thumbnail}" alt="${element.title}">
-      <p> ${element.title} </p>
-      <p> $ ${element.price} </p>
-      <p> % ${element.discountPercentage} </p>
-      <p>  ⭐ ${element.rating} </p>
-
-      <P id="productDesc"> ${element.description}
-
-
+        <img
+          id="productImage"
+          src="${element.thumbnail}"
+          alt="${element.title}"
+        >
+        <p>${element.title}</p>
+        <p>$ ${element.price}</p>
+        <p>% ${element.discountPercentage}</p>
+        <p>⭐ ${element.rating}</p>
+        <p id="productDesc">${element.description}</p>
       </div>
-      
-      
-      
-      `     
-      
-      li.addEventListener(`click`, () => {
-      superproducts.style.display = `none`
-      const detailPage = document.querySelector(`#detailsOfProduct`)
-    
-      details.style.display = `block`
+    `;
+
+    li.addEventListener('click', () => {
+      showProductDetails(element.id);
+    });
+
+    LittleShop.append(li);
+  });
+}
 
 
+async function showProductDetails(id) {
+  const superproducts = document.querySelector('.superproducts');
+  const details = document.querySelector('.details');
+  const detailPage = document.querySelector('#detailsOfProduct');
 
+  superproducts.style.display = 'none';
+  details.style.display = 'block';
 
-      detailPage.innerHTML = `
-      
-      <img id="imageDetailProduct" src="${element.thumbnail}" alt="${element.title}">
-      <p id="titleProduct"> ${element.title} </p>
-      <p> $ ${element.price} </p>
-      <p> category : ${element.category} </p>
-      <p id="stock"> ${element.stock > 0 ? 'In Stock' : 'None Left'} </p>
-      <P> ${element.description} </p>
-      <p> tags : ${element.tags} </p>
-            <button id="BuyButton">Buy This Product</button>
-                    <p id="addedToCart" style="display: none;">added to cart</p>
+  detailPage.innerHTML = '<p>Loading product...</p>';
 
-            
+  try {
+    const res = await fetch(`https://dummyjson.com/products/${id}`);
 
-  `
+    if (!res.ok) {
+      throw new Error(`Request failed: ${res.status}`);
+    }
 
+    const product = await res.json();
 
-      const ptegCart = detailPage.querySelector(`#addedToCart`);
-      const buyBtn = detailPage.querySelector(`#BuyButton`);
+    detailPage.innerHTML = `
+      <img
+        id="imageDetailProduct"
+        src="${product.thumbnail}"
+        alt="${product.title}"
+      >
 
+      <p id="titleProduct">${product.title}</p>
+      <p>Price: $${product.price}</p>
+      <p>Category: ${product.category}</p>
+      <p>Rating: ⭐ ${product.rating}</p>
+      <p id="stock">
+        ${product.stock > 0 ? 'In Stock' : 'None Left'}
+      </p>
+      <p>${product.description}</p>
+      <p>Tags: ${product.tags.join(', ')}</p>
 
-      buyBtn.addEventListener(`click`, () => {
-         cart.push(element);
-         localStorage.setItem('myCart', JSON.stringify(cart));
-         updateCartAmount()
-         TotalRender()
-         ptegCart.style.display = `block`;
-      }); 
+      <button id="BuyButton">Buy This Product</button>
+      <p id="addedToCart" style="display: none;">
+        Added to cart!
+      </p>
+    `;
 
-    }); 
-      
-  
-    diva.append(li);
+    const buyBtn = detailPage.querySelector('#BuyButton');
+    const ptegCart = detailPage.querySelector('#addedToCart');
 
-  }); 
+    buyBtn.addEventListener('click', () => {
+      const alreadyInCart = cart.some(item => item.id === product.id);
+
+      if (alreadyInCart) {
+        ptegCart.textContent = 'This product is already in your cart.';
+        ptegCart.style.display = 'block';
+        return;
+      }
+
+      cart.push(product);
+      localStorage.setItem('myCart', JSON.stringify(cart));
+
+      updateCartAmount();
+      TotalRender();
+
+      ptegCart.textContent = 'Added to cart!';
+      ptegCart.style.display = 'block';
+
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    detailPage.innerHTML = `
+      <p>Could not load this product.</p>
+      <button id="retryProduct">Try again</button>
+    `;
+
+    detailPage.querySelector('#retryProduct').addEventListener('click', () => {
+      showProductDetails(id);
+    });
+  }
 }

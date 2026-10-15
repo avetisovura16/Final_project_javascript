@@ -8,8 +8,9 @@
   </head>
   <body>
     <main>
-      <button id="cartButton">Your Cart</button>
+
       <div class="superproducts">
+              <button id="cartButton">Your Cart</button>
         <ul id="ourproducts"></ul>
         <p id="pteg">nothing found :(</p>
         <p id="loadText">LOADING...</p>
@@ -17,6 +18,19 @@
 
         <div class="things"> 
         <input id="searchInput" type="text" placeholder="search" />
+
+        <select id="sortOrder">
+  <option value="none">No Sorting</option>
+  <option value="asc">Price: Low to High</option> <!-- По возрастанию -->
+  <option value="desc">Price: High to Low</option> <!-- По убыванию -->
+</select>
+
+
+
+
+
+
+
         <button id="button_prev"> Prev</button>
         <p id="PageNumber">1</p>
         <button id="button_next"> Next</button>
@@ -27,7 +41,10 @@
       </div>
 
       <div class="details" style="display: none;">
+        <div class="buttons"> 
         <button id="goBackButton">comeback</button>
+
+        </div>
     
         <div id="detailsOfProduct"></div>
 
@@ -38,7 +55,10 @@
       <div class="cartSurface" style="display: none;">
         <button id="CartBackBtn">Come Back</button>
         <h1>Your Cart :</h1>
-        <ul id="UlProducts"></ul>
+        <div class="divList"> 
+                  <p id="emptyText">your cart is empty :(</p>
+        <ul id="UlProducts"> </ul>
+        </div>
 <p id="CartAmount">Amount: 0</p>
         <p id="CartTotal">total : </p>
       </div>

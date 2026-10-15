@@ -2,7 +2,7 @@ let cart = JSON.parse(localStorage.getItem('myCart')) || []
 
 
 
-async function diva() {
+async function LittleShop() {
  
 
  const pteg = document.getElementById(`pteg`);
@@ -15,8 +15,9 @@ const superproducts = document.querySelector(`.superproducts`)
 const buttonNext = document.getElementById(`button_next`);
 const buttonPrev = document.getElementById(`button_prev`);
 const pageNumber = document.getElementById(`PageNumber`)
-const diva = document.getElementById(`ourproducts`);
+ const productsList = document.getElementById(`ourproducts`);
 const comeback = document.getElementById(`comeback`);
+
 
 buttonPrev.disabled = true
 comeback.disabled = true
@@ -45,18 +46,32 @@ comeback.disabled = true
       const dataFull = await resFull.json();
    fullProductList = dataFull.products;
 
-  } catch {
-    console.error(`error`)
+  } catch (error) {
+    console.error(`error`, error)
     loadtext.style.display = `none`
-    diva.innerHTML = `
-    <li> no internet connection. </li>
-    `
+    
+
+    productsList.innerHTML = `
+      <li class="error-container">
+        <p>No internet connection.</p>
+        <button id="retryMain">Try again</button>
+      </li>
+    `;
+    
+
+    const retryBtn = document.getElementById('retryMain');
+    if (retryBtn) {
+      retryBtn.addEventListener('click', () => {
+        LittleShop()
+      });
+    }
+    
     return
   }
 
 
 let pageAmount = Math.ceil(fullProductList.length / 12)
-console.log(pageAmount)
+
 
 
   loadtext.style.display = `none`
@@ -72,17 +87,18 @@ console.log(pageAmount)
   input.addEventListener(`input`, async() => {
     const searchtext = input.value.toLowerCase();
 
-      if (searchtext !== "") {
-        buttonNext.style.display = `none`
-        buttonPrev.style.display = `none`
-        pageNumber.style.display = `none`
-        
-    } else {
-
+      if (searchtext === "") {
         buttonNext.style.display = `block`
         buttonPrev.style.display = `block`
         pageNumber.style.display = `block`
+        comeback.style.display = `block`
+        
+    } else {
 
+        buttonNext.style.display = `none`
+        buttonPrev.style.display = `none`
+        pageNumber.style.display = `none`
+        comeback.style.display = `none`
     }
 
 
@@ -90,29 +106,44 @@ console.log(pageAmount)
    
     
 
-       const filtered = fullProductList.filter( (item) => 
-      item.title.toLowerCase().includes(searchtext)
-    ) 
+try {
+  const res = await fetch(
+    `https://dummyjson.com/products/search?q=${encodeURIComponent(searchtext)}`
+  );
 
+  if (!res.ok) {
+    throw new Error(`Request failed: ${res.status}`);
+  }
 
-
-
-
-
-
-
-
-
-
-    if (filtered.length === 0) {
+  const data = await res.json();
+    if (data.products.length === 0) {
       document.getElementById(`pteg`).style.display = `block`;
     } else {
       document.getElementById(`pteg`).style.display = `none`;
     }
 
+  render(data.products.slice(0, 10));
+
+} catch (error) {
+  console.error(error);
+  pteg.style.display = `none`;
+  LittleShop.innerHTML = `<li>Search failed. Please try again.</li>`;
+}
+
+
+
+
+
+
+
+
+
+
+
+
     
 
-    render(filtered.slice(0,10));
+    render(data.products.slice(0,10));
 
 
   });
@@ -123,7 +154,7 @@ console.log(pageAmount)
  
   pteg.style.display = `none`;
 
-
+    pageNumber.textContent = `${currectpage} / ${pageAmount}`
 
 
 
@@ -139,7 +170,7 @@ console.log(pageAmount)
     const data = await res.json();
     product = data.products;
     currectpage = currectpage + 1;
-    pageNumber.textContent = `${currectpage}`
+    pageNumber.textContent = `${currectpage} / ${pageAmount}`
 
     if (currectpage > 1) {
       buttonPrev.disabled = false;
@@ -172,7 +203,7 @@ console.log(pageAmount)
       const data = await res.json();
       product = data.products;
       currectpage = currectpage - 1;
-    pageNumber.textContent = `${currectpage}`
+    pageNumber.textContent = `${currectpage} / ${pageAmount}`
 
 
       if (currectpage === 1) {
@@ -197,7 +228,7 @@ console.log(pageAmount)
 comeback.addEventListener(`click`, async () => {
   skip = 0;
   currectpage = 1;
-  pageNumber.textContent = `1`;
+    pageNumber.textContent = `${currectpage} / ${pageAmount}`
 
   const res = await fetch(
     `https://dummyjson.com/products?limit=${limit}&skip=${skip}`
@@ -244,6 +275,7 @@ const superproducts = document.querySelector(`.superproducts`)
 
       const CartUl = document.getElementById(`UlProducts`)
       const cartButtonBack = document.getElementById(`CartBackBtn`)
+      const emptyCart = document.getElementById(`emptyText`)
 
 
         
@@ -252,6 +284,7 @@ const superproducts = document.querySelector(`.superproducts`)
 
       cartButton.addEventListener(`click`, () => {
       superproducts.style.display = `none`
+
       
       
     
@@ -272,6 +305,13 @@ const superproducts = document.querySelector(`.superproducts`)
         
       } 
 
+            if(cart.length === 0) {
+            emptyCart.style.display = `block`
+      } else {
+                    emptyCart.style.display = `none`
+
+      }
+
 
 
 
@@ -281,7 +321,30 @@ const superproducts = document.querySelector(`.superproducts`)
 
   cart.forEach((element) => {
     const CartLi = document.createElement(`li`);
-    CartLi.textContent = ` ${element.title} —  $ ${element.price} `;
+    CartLi.innerHTML=`    <div id="productCard">
+
+      <img id="productImage" src="${element.thumbnail}" alt="${element.title}">
+      <p> ${element.title} </p>
+      <p> $ ${element.price} </p>
+      <button> remove </button>
+
+
+
+      </div>
+      
+      `
+
+const removeButton = CartLi.querySelector('button');
+
+removeButton.addEventListener('click', () => {
+  cart = cart.filter(item => item.id !== element.id);
+
+  localStorage.setItem('myCart', JSON.stringify(cart));
+
+  cartButton.click();
+});
+
+
     cartUl.append(CartLi);
   });
 
@@ -314,7 +377,7 @@ const superproducts = document.querySelector(`.superproducts`)
 
 
 
-diva();
+LittleShop();
 
 
 
@@ -325,13 +388,17 @@ function updateCartAmount() {
       AmountSign.textContent =`Amount : ${AmountCart}`
 }
 
+
+
+
 const CartTotal = document.getElementById(`CartTotal`)
 let total = 0
+
 function TotalRender() {
   total = 0
   for(let i = 0; i < cart.length;i++) {
 
-    total = total + cart[i].price
+    total = Math.ceil(total + cart[i].price)
 
     
 

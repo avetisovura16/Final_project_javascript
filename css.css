@@ -10,8 +10,22 @@ body {
 
 #PageNumber {
     margin: 0;
-    width: 20px;
+    width: 50px;
 }
+
+
+.buttons {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+
+#cartButton {
+    width: 71px;
+    height: 21px;
+}
+
 
 .things {
     display: flex;
@@ -87,4 +101,24 @@ p {
 
 #BuyButton {
     width: 150px;
+}
+
+#UlProducts {
+        display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    
+}
+
+#emptyText {
+    font-weight: bold ;
+    
+}
+
+.divList {
+    background-color: #92aece;
+    width: 1450px;
+    border-radius: 10px;
+    padding: 20px;
+
 }
