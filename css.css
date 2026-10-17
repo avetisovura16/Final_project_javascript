@@ -154,3 +154,25 @@ body.dark select {
     border: 1px solid #6c88a9;
 }
 
+
+#addProductButton {
+display: flex;
+color: red;
+position: absolute;
+right: 10px;
+}
+
+.field-error {
+  color: #d93025;
+  margin: 4px 0 10px;
+  font-size: 14px;
+}
+
+#formMessage {
+  margin: 10px 0;
+}
+
+#addProductbtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

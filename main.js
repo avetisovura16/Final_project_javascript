@@ -17,7 +17,8 @@ const buttonPrev = document.getElementById(`button_prev`);
 const pageNumber = document.getElementById(`PageNumber`)
  const productsList = document.getElementById(`ourproducts`);
 const comeback = document.getElementById(`comeback`);
-
+const YourOwnProduct = document.querySelector(`.YourOwnProduct`)
+YourOwnProduct.style.display = `none`
 
 buttonPrev.disabled = true
 comeback.disabled = true
@@ -343,7 +344,24 @@ removeButton.addEventListener('click', () => {
 
 
 
+const productBtn = document.getElementById(`addProductButton`)
+const productBack = document.getElementById(`ProductBack`)
+const YourOwnProduct = document.querySelector(`.YourOwnProduct`)
+
+      productBtn.addEventListener(`click`, () => {
+              superproducts.style.display = `none`
       
+    
+      YourOwnProduct.style.display = `block`
+
+
+      })
+    
+
+      productBack.addEventListener(`click`, () => {
+              superproducts.style.display = `block`
+                YourOwnProduct.style.display = `none`  
+      })  
 
 
 
@@ -379,3 +397,98 @@ function TotalRender() {
 
       CartTotal.textContent = `total = $${total}`
 }
+
+
+
+const productForm = document.getElementById('productForm');
+
+productForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+
+  const nameInput = document.getElementById('name');
+  const priceInput = document.getElementById('price');
+  const emailInput = document.getElementById('email');
+  const descriptionInput = document.getElementById('description');
+  const submitButton = document.getElementById('addProductbtn');
+  const formMessage = document.getElementById('formMessage');
+
+  const nameError = document.getElementById('nameError');
+  const priceError = document.getElementById('priceError');
+  const emailError = document.getElementById('emailError');
+  const descriptionError = document.getElementById('descriptionError');
+
+
+  nameError.textContent = '';
+  priceError.textContent = '';
+  emailError.textContent = '';
+  descriptionError.textContent = '';
+  formMessage.textContent = '';
+
+  let isValid = true;
+
+  const name = nameInput.value.trim();
+  const price = Number(priceInput.value);
+  const email = emailInput.value.trim();
+  const description = descriptionInput.value.trim();
+
+  if (name.length < 2) {
+    nameError.textContent = 'Name must contain at least 2 characters.';
+    isValid = false;
+  }
+
+  if (priceInput.value === '' || !Number.isFinite(price) || price <= 0) {
+    priceError.textContent = 'Price must be greater than zero.';
+    isValid = false;
+  }
+
+  if (!emailInput.validity.valid) {
+    emailError.textContent = 'Enter a valid email address.';
+    isValid = false;
+  }
+
+  if (description.length < 10) {
+    descriptionError.textContent =
+      'Description must contain at least 10 characters.';
+    isValid = false;
+  }
+
+  if (!isValid) {
+    formMessage.textContent = 'Please fix the errors above.';
+    return;
+  }
+
+  submitButton.disabled = true;
+  formMessage.textContent = 'Sending product...';
+
+  try {
+    const res = await fetch('https://dummyjson.com/products/add', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        title: name,
+        price: price,
+        description: description,
+        email: email
+      })
+    });
+
+    if (!res.ok) {
+      throw new Error(`Request failed: ${res.status}`);
+    }
+
+    const data = await res.json();
+
+    formMessage.textContent =
+      `Product "${data.title}" created successfully. ID: ${data.id}`;
+
+    productForm.reset();
+  } catch (error) {
+    console.error(error);
+    formMessage.textContent =
+      'Could not create the product. Please try again.';
+  } finally {
+    submitButton.disabled = false;
+  }
+});
