@@ -114,6 +114,8 @@ let pageAmount = Math.ceil(fullProductList.length / 12)
         buttonPrev.style.display = `block`
         pageNumber.style.display = `block`
         comeback.style.display = `block`
+        sortSelect.style.display = `block`
+
         
     } else {
 
@@ -121,6 +123,7 @@ let pageAmount = Math.ceil(fullProductList.length / 12)
         buttonPrev.style.display = `none`
         pageNumber.style.display = `none`
         comeback.style.display = `none`
+        sortSelect.style.display = `none`
     }
 
 
