@@ -13,14 +13,14 @@ HOW TO OPEN :
 Open `Index.html` in a browser, e.g. via VS Code Live Server.
 
 ENDPOINTS USED :
-- GET https://dummyjson.com/products?limit=12&skip=0 — catalog page
-- GET https://dummyjson.com/products?limit=0 — all products (for sorting)
-- GET https://dummyjson.com/products/search?q=... — search
-- GET https://dummyjson.com/products/{id} — product details
-- POST https://dummyjson.com/products/add — add a product
+- GET https://dummyjson.com/products?limit=12&skip=0 — catalog page.
+- GET https://dummyjson.com/products?limit=0 — all products (for sorting).
+- GET https://dummyjson.com/products/search?q=... — search.
+- GET https://dummyjson.com/products/{id} — product details.
+- POST https://dummyjson.com/products/add — add a product.
 
 WHAT I WOULD IMPROVE :
-- UI design ( i would make it more professional)
+- UI design ( i would make it more professional).
 - Better mobile layout.
 
 
