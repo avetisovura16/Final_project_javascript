@@ -20,7 +20,7 @@ ENDPOINTS USED :
 - POST https://dummyjson.com/products/add — add a product
 
 WHAT I WOULD IMPROVE :
-- UI design ( i would make it more profecional)
+- UI design ( i would make it more professional)
 - Better mobile layout.
 
 
