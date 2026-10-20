@@ -1,11 +1,10 @@
-
 function render(products) {
-  const LittleShop = document.getElementById('ourproducts');
+  const LittleShop = document.getElementById("ourproducts");
 
-  LittleShop.innerHTML = '';
+  LittleShop.innerHTML = "";
 
   products.forEach((element) => {
-    const li = document.createElement('li');
+    const li = document.createElement("li");
 
     li.innerHTML = `
       <div id="productCard">
@@ -22,7 +21,7 @@ function render(products) {
       </div>
     `;
 
-    li.addEventListener('click', () => {
+    li.addEventListener("click", () => {
       showProductDetails(element.id);
     });
 
@@ -30,16 +29,15 @@ function render(products) {
   });
 }
 
-
 async function showProductDetails(id) {
-  const superproducts = document.querySelector('.superproducts');
-  const details = document.querySelector('.details');
-  const detailPage = document.querySelector('#detailsOfProduct');
+  const superproducts = document.querySelector(".superproducts");
+  const details = document.querySelector(".details");
+  const detailPage = document.querySelector("#detailsOfProduct");
 
-  superproducts.style.display = 'none';
-  details.style.display = 'block';
+  superproducts.style.display = "none";
+  details.style.display = "block";
 
-  detailPage.innerHTML = '<p>Loading product...</p>';
+  detailPage.innerHTML = "<p>Loading product...</p>";
 
   try {
     const res = await fetch(`https://dummyjson.com/products/${id}`);
@@ -62,10 +60,10 @@ async function showProductDetails(id) {
       <p>Category: ${product.category}</p>
       <p>Rating: ⭐ ${product.rating}</p>
       <p id="stock">
-        ${product.stock > 0 ? 'In Stock' : 'None Left'}
+        ${product.stock > 0 ? "In Stock" : "None Left"}
       </p>
       <p>${product.description}</p>
-      <p>Tags: ${product.tags.join(', ')}</p>
+      <p>Tags: ${product.tags.join(", ")}</p>
 
       <button id="BuyButton">Buy This Product</button>
       <p id="addedToCart" style="display: none;">
@@ -73,29 +71,32 @@ async function showProductDetails(id) {
       </p>
     `;
 
-    const buyBtn = detailPage.querySelector('#BuyButton');
-    const ptegCart = detailPage.querySelector('#addedToCart');
+    const buyBtn = detailPage.querySelector("#BuyButton");
+    const ptegCart = detailPage.querySelector("#addedToCart");
 
-    buyBtn.addEventListener('click', () => {
-      const alreadyInCart = cart.some(item => item.id === product.id);
+    buyBtn.addEventListener("click", () => {
+      const alreadyInCart = cart.some((item) => item.id === product.id);
 
       if (alreadyInCart) {
-        ptegCart.textContent = 'This product is already in your cart.';
-        ptegCart.style.display = 'block';
+        ptegCart.textContent = "This product is already in your cart.";
+        ptegCart.style.display = "block";
         return;
       }
 
+      product.quantity = 1;
       cart.push(product);
-      localStorage.setItem('myCart', JSON.stringify(cart));
+      localStorage.setItem("myCart", JSON.stringify(cart));
 
+
+
+
+      
       updateCartAmount();
       TotalRender();
 
-      ptegCart.textContent = 'Added to cart!';
-      ptegCart.style.display = 'block';
-
+      ptegCart.textContent = "Added to cart!";
+      ptegCart.style.display = "block";
     });
-
   } catch (error) {
     console.error(error);
 
@@ -104,32 +105,29 @@ async function showProductDetails(id) {
       <button id="retryProduct">Try again</button>
     `;
 
-    detailPage.querySelector('#retryProduct').addEventListener('click', () => {
+    detailPage.querySelector("#retryProduct").addEventListener("click", () => {
       showProductDetails(id);
     });
   }
 }
 
-
-
-
 function Theme() {
-  const button = document.getElementById('statusMod')
+  const button = document.getElementById("statusMod");
 
-  const savedTheme = localStorage.getItem('isDarkTheme') === 'true'
+  const savedTheme = localStorage.getItem("isDarkTheme") === "true";
 
   if (savedTheme) {
-    document.body.classList.add('dark')
-    button.textContent = '☀'
+    document.body.classList.add("dark");
+    button.textContent = "☀";
   } else {
-    button.textContent = '⏾'
+    button.textContent = "⏾";
   }
 
-  button.addEventListener('click', () => {
-    const isDark = document.body.classList.toggle('dark')
-    button.textContent = isDark ? '☀' : '⏾'
-    localStorage.setItem('isDarkTheme', isDark)
-  })
+  button.addEventListener("click", () => {
+    const isDark = document.body.classList.toggle("dark");
+    button.textContent = isDark ? "☀" : "⏾";
+    localStorage.setItem("isDarkTheme", isDark);
+  });
 }
 
-Theme()
+Theme();

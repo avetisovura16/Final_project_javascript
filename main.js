@@ -1,56 +1,49 @@
-let cart = JSON.parse(localStorage.getItem('myCart')) || []
-
-
+let cart = JSON.parse(localStorage.getItem("myCart")) || [];
 
 async function LittleShop() {
- 
+  const pteg = document.getElementById(`pteg`);
+  pteg.style.display = `none`;
+  const details = document.querySelector(`.details`);
+  const loadtext = document.getElementById(`loadText`);
+  loadtext.style.display = `block`;
 
- const pteg = document.getElementById(`pteg`);
-pteg.style.display = `none`
-  const details = document.querySelector(`.details`)
-const loadtext = document.getElementById(`loadText`)
-loadtext.style.display = `block`
+  const superproducts = document.querySelector(`.superproducts`);
+  const buttonNext = document.getElementById(`button_next`);
+  const buttonPrev = document.getElementById(`button_prev`);
+  const pageNumber = document.getElementById(`PageNumber`);
+  const productsList = document.getElementById(`ourproducts`);
+  const comeback = document.getElementById(`comeback`);
+  const YourOwnProduct = document.querySelector(`.YourOwnProduct`);
+  YourOwnProduct.style.display = `none`;
 
-const superproducts = document.querySelector(`.superproducts`)
-const buttonNext = document.getElementById(`button_next`);
-const buttonPrev = document.getElementById(`button_prev`);
-const pageNumber = document.getElementById(`PageNumber`)
- const productsList = document.getElementById(`ourproducts`);
-const comeback = document.getElementById(`comeback`);
-const YourOwnProduct = document.querySelector(`.YourOwnProduct`)
-YourOwnProduct.style.display = `none`
+  buttonPrev.disabled = true;
+  comeback.style.display = `none`;
 
-buttonPrev.disabled = true
-comeback.disabled = true
-
-
-  let skip = 0; 
-  let limit = 12; 
+  let skip = 0;
+  let limit = 12;
   let currectpage = 1;
   let product = [];
-  let fullProductList = []
-
+  let fullProductList = [];
 
   try {
-      const res = await fetch(`https://dummyjson.com/products?limit=${limit}&skip=${skip}`);
+    const res = await fetch(
+      `https://dummyjson.com/products?limit=${limit}&skip=${skip}`,
+    );
 
-      if(!res.ok) throw new Error(`responce is wrong`)
+    if (!res.ok) throw new Error(`responce is wrong`);
 
-          const data = await res.json();
-  product = data.products;
+    const data = await res.json();
+    product = data.products;
 
-        const resFull = await fetch(`https://dummyjson.com/products?limit=0`);
+    const resFull = await fetch(`https://dummyjson.com/products?limit=0`);
 
-      if(!resFull.ok) throw new Error(`responce is wrong`)
+    if (!resFull.ok) throw new Error(`responce is wrong`);
 
-
-      const dataFull = await resFull.json();
-   fullProductList = dataFull.products;
-
+    const dataFull = await resFull.json();
+    fullProductList = dataFull.products;
   } catch (error) {
-    console.error(`error`, error)
-    loadtext.style.display = `none`
-    
+    console.error(`error`, error);
+    loadtext.style.display = `none`;
 
     productsList.innerHTML = `
       <li class="error-container">
@@ -58,47 +51,47 @@ comeback.disabled = true
         <button id="retryMain">Try again</button>
       </li>
     `;
-    
 
-    const retryBtn = document.getElementById('retryMain');
+    const retryBtn = document.getElementById("retryMain");
     if (retryBtn) {
-      retryBtn.addEventListener('click', () => {
-        LittleShop()
+      retryBtn.addEventListener("click", () => {
+        LittleShop();
       });
     }
-    
-    return
+
+    return;
   }
 
+  let pageAmount = Math.ceil(fullProductList.length / 12);
 
-let pageAmount = Math.ceil(fullProductList.length / 12)
+  let displayList = fullProductList.slice();
 
-  let displayList = fullProductList.slice()
-
-  const sortSelect = document.getElementById(`sortOrder`)
+  const sortSelect = document.getElementById(`sortOrder`);
 
   sortSelect.addEventListener(`change`, () => {
     if (sortSelect.value === `asc`) {
-      displayList.sort((a, b) => a.price - b.price)
+      displayList.sort((a, b) => a.price - b.price);
     } else if (sortSelect.value === `desc`) {
-      displayList.sort((a, b) => b.price - a.price)
+      displayList.sort((a, b) => b.price - a.price);
+    
+    } else if (sortSelect.value === `rating`) {
+      displayList.sort((a, b) => b.rating - a.rating);
+      
     } else {
-      displayList = fullProductList.slice()
+      displayList = fullProductList.slice();
     }
 
-    skip = 0
-    currectpage = 1
-    pageNumber.textContent = `${currectpage} / ${pageAmount}`
-    buttonPrev.disabled = true
-    buttonNext.disabled = false
-    comeback.disabled = true
+    skip = 0;
+    currectpage = 1;
+    pageNumber.textContent = `${currectpage} / ${pageAmount}`;
+    buttonPrev.disabled = true;
+    buttonNext.disabled = false;
+    comeback.style.display = `none`;
 
-    render(displayList.slice(skip, skip + limit))
-  })
+    render(displayList.slice(skip, skip + limit));
+  });
 
-  loadtext.style.display = `none`
-
-  
+  loadtext.style.display = `none`;
 
   render(product);
 
@@ -106,326 +99,270 @@ let pageAmount = Math.ceil(fullProductList.length / 12)
 
   const textvalue = input.value;
 
-  input.addEventListener(`input`, async() => {
+  input.addEventListener(`input`, async () => {
     const searchtext = input.value.toLowerCase();
 
-      if (searchtext === "") {
-        buttonNext.style.display = `block`
-        buttonPrev.style.display = `block`
-        pageNumber.style.display = `block`
-        comeback.style.display = `block`
-        sortSelect.style.display = `block`
-
-        
+    if (searchtext === "") {
+      buttonNext.style.display = `block`;
+      buttonPrev.style.display = `block`;
+      pageNumber.style.display = `block`;
+      comeback.style.display = `block`;
+      sortSelect.style.display = `block`;
     } else {
-
-        buttonNext.style.display = `none`
-        buttonPrev.style.display = `none`
-        pageNumber.style.display = `none`
-        comeback.style.display = `none`
-        sortSelect.style.display = `none`
+      buttonNext.style.display = `none`;
+      buttonPrev.style.display = `none`;
+      pageNumber.style.display = `none`;
+      comeback.style.display = `none`;
+      sortSelect.style.display = `none`;
     }
 
+    if (searchtext === "") return render(product);
 
-  if (searchtext === "") return render(product); 
-   
-    
+    try {
+      const res = await fetch(
+        `https://dummyjson.com/products/search?q=${encodeURIComponent(searchtext)}`,
+      );
 
-try {
-  const res = await fetch(
-    `https://dummyjson.com/products/search?q=${encodeURIComponent(searchtext)}`
-  );
+      if (!res.ok) {
+        throw new Error(`Request failed: ${res.status}`);
+      }
 
-  if (!res.ok) {
-    throw new Error(`Request failed: ${res.status}`);
-  }
+      const data = await res.json();
+      if (data.products.length === 0) {
+        document.getElementById(`pteg`).style.display = `block`;
+      } else {
+        document.getElementById(`pteg`).style.display = `none`;
+      }
 
-  const data = await res.json();
-    if (data.products.length === 0) {
-      document.getElementById(`pteg`).style.display = `block`;
-    } else {
-      document.getElementById(`pteg`).style.display = `none`;
+      render(data.products.slice(0, 10));
+    } catch (error) {
+      console.error(error);
+      pteg.style.display = `none`;
+      productsList.innerHTML = `<li>Search failed. Please try again.</li>`;
     }
 
-  render(data.products.slice(0, 10));
-
-} catch (error) {
-  console.error(error);
-  pteg.style.display = `none`;
-  productsList.innerHTML = `<li>Search failed. Please try again.</li>`;
-}
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-    render(data.products.slice(0,10));
-
-
+    render(data.products.slice(0, 10));
   });
 
-
-
-
- 
   pteg.style.display = `none`;
 
-    pageNumber.textContent = `${currectpage} / ${pageAmount}`
-
-
+  pageNumber.textContent = `${currectpage} / ${pageAmount}`;
 
   buttonNext.addEventListener(`click`, () => {
-    if (currectpage >= pageAmount) return
+    if (currectpage >= pageAmount) return;
 
-    skip = skip + limit
-    currectpage = currectpage + 1
-    pageNumber.textContent = `${currectpage} / ${pageAmount}`
+    skip = skip + limit;
+    currectpage = currectpage + 1;
+    pageNumber.textContent = `${currectpage} / ${pageAmount}`;
 
-    buttonPrev.disabled = currectpage === 1
-    comeback.disabled = currectpage === 1
-    buttonNext.disabled = currectpage === pageAmount
+    buttonPrev.disabled = currectpage === 1;
+    comeback.style.display = currectpage === 1 ? `none` : `block`;
+    buttonNext.disabled = currectpage === pageAmount;
 
-    render(displayList.slice(skip, skip + limit))
+    render(displayList.slice(skip, skip + limit));
   });
 
   buttonPrev.addEventListener(`click`, () => {
-    if (currectpage <= 1) return
+    if (currectpage <= 1) return;
 
-    skip = skip - limit
-    currectpage = currectpage - 1
-    pageNumber.textContent = `${currectpage} / ${pageAmount}`
+    skip = skip - limit;
+    currectpage = currectpage - 1;
+    pageNumber.textContent = `${currectpage} / ${pageAmount}`;
 
-    buttonPrev.disabled = currectpage === 1
-    comeback.disabled = currectpage === 1
-    buttonNext.disabled = currectpage === pageAmount
+    buttonPrev.disabled = currectpage === 1;
+    comeback.style.display = currectpage === 1 ? `none` : `block`;
+    buttonNext.disabled = currectpage === pageAmount;
 
-    render(displayList.slice(skip, skip + limit))
+    render(displayList.slice(skip, skip + limit));
   });
 
+  comeback.addEventListener(`click`, () => {
+    skip = 0;
+    currectpage = 1;
+    pageNumber.textContent = `${currectpage} / ${pageAmount}`;
 
+    render(displayList.slice(skip, skip + limit));
 
+    buttonPrev.disabled = true;
+    buttonNext.disabled = false;
+    comeback.style.display = `none`;
+  });
+}
+const superproducts = document.querySelector(`.superproducts`);
+const details = document.querySelector(`.details`);
+const cartButton = document.getElementById(`cartButton`);
 
+const buttonBack = document.getElementById(`goBackButton`);
+buttonBack.addEventListener(`click`, () => {
+  details.style.display = `none`;
+  superproducts.style.display = `block`;
 
-comeback.addEventListener(`click`, () => {
-  skip = 0;
-  currectpage = 1;
-    pageNumber.textContent = `${currectpage} / ${pageAmount}`
-
-  render(displayList.slice(skip, skip + limit));
-
-  buttonPrev.disabled = true;
-  buttonNext.disabled = false;
-  comeback.disabled = true
+  cartButton.style.display = `block`;
 });
 
+const cartSurface = document.querySelector(`.cartSurface`);
 
+const CartUl = document.getElementById(`UlProducts`);
+const cartButtonBack = document.getElementById(`CartBackBtn`);
+const emptyCart = document.getElementById(`emptyText`);
 
+cartButton.addEventListener(`click`, () => {
+  superproducts.style.display = `none`;
 
+  cartSurface.style.display = `block`;
 
-}
-const superproducts = document.querySelector(`.superproducts`)
-  const details = document.querySelector(`.details`)
-        const cartButton = document.getElementById(`cartButton`)
+  if (cartSurface.style.display === `block`) {
+    cartButton.style.display = `none`;
+  } else {
+    cartButton.style.display = `block`;
+  }
 
-      const buttonBack = document.getElementById(`goBackButton`)
-      buttonBack.addEventListener(`click`, () => {
-        details.style.display = `none`
-        superproducts.style.display = `block`
-        
-                cartButton.style.display=`block`
-      })
+  if (details.style.display === `block`) {
+    details.style.display = `none`;
+    cartSurface.style.display = `block`;
+  }
 
-
-
-
-            const cartSurface = document.querySelector(`.cartSurface`)
-
-      const CartUl = document.getElementById(`UlProducts`)
-      const cartButtonBack = document.getElementById(`CartBackBtn`)
-      const emptyCart = document.getElementById(`emptyText`)
-
-
-        
-
-
-
-      cartButton.addEventListener(`click`, () => {
-      superproducts.style.display = `none`
-
-      
-      
-    
-      cartSurface.style.display = `block`
-
-                  if(cartSurface.style.display === `block`) {
-        cartButton.style.display=`none`
-      } else {
-        cartButton.style.display=`block`
-      }
-
-
-
-
-      if(details.style.display === `block`) {
-        details.style.display = `none`
-        cartSurface.style.display = `block`
-        
-      } 
-
-            if(cart.length === 0) {
-            emptyCart.style.display = `block`
-      } else {
-                    emptyCart.style.display = `none`
-
-      }
-
-
-
-
+  if (cart.length === 0) {
+    emptyCart.style.display = `block`;
+  } else {
+    emptyCart.style.display = `none`;
+  }
 
   const cartUl = document.getElementById(`UlProducts`);
-  cartUl.innerHTML = ``; 
+  cartUl.innerHTML = ``;
 
   cart.forEach((element) => {
+    if (!element.quantity) element.quantity = 1;
+
     const CartLi = document.createElement(`li`);
-    CartLi.innerHTML=`    <div id="productCard">
+    CartLi.innerHTML = `    <div id="productCard">
 
       <img id="productImage" src="${element.thumbnail}" alt="${element.title}">
       <p> ${element.title} </p>
       <p> $ ${element.price} </p>
       <button> remove </button>
+      <button id="increaseQty"> + </button>
+      <button id="quantity"> ${element.quantity} </button>
+      <button id="decreaseQty"> - </button>
+
 
 
 
       </div>
       
-      `
+      `;
 
-const removeButton = CartLi.querySelector('button');
+    const removeButton = CartLi.querySelector("button");
 
-removeButton.addEventListener('click', () => {
-  cart = cart.filter(item => item.id !== element.id);
+    removeButton.addEventListener("click", () => {
+      cart = cart.filter((item) => item.id !== element.id);
 
-  localStorage.setItem('myCart', JSON.stringify(cart));
+      localStorage.setItem("myCart", JSON.stringify(cart));
 
-  cartButton.click();
-});
+      cartButton.click();
+    });
 
+    const qtyBtn = CartLi.querySelector("#quantity");
+    const incBtn = CartLi.querySelector("#increaseQty");
+    const decBtn = CartLi.querySelector("#decreaseQty");
+
+    incBtn.addEventListener("click", () => {
+      element.quantity++;
+      qtyBtn.textContent = element.quantity;
+      localStorage.setItem("myCart", JSON.stringify(cart));
+      TotalRender();
+      updateCartAmount()
+    });
+
+    decBtn.addEventListener("click", () => {
+      if (element.quantity > 1) {
+        element.quantity--;
+        qtyBtn.textContent = element.quantity;
+        localStorage.setItem("myCart", JSON.stringify(cart));
+        TotalRender();
+        updateCartAmount()
+      }
+    });
 
     cartUl.append(CartLi);
   });
 
-  
-  updateCartAmount()
-  TotalRender()
+  updateCartAmount();
+  TotalRender();
 });
-      
 
-      
+cartButtonBack.addEventListener(`click`, () => {
+  superproducts.style.display = `block`;
 
+  cartSurface.style.display = `none`;
+  cartButton.style.display = `block`;
+});
 
+const productBtn = document.getElementById(`addProductButton`);
+const productBack = document.getElementById(`ProductBack`);
+const YourOwnProduct = document.querySelector(`.YourOwnProduct`);
 
-      cartButtonBack.addEventListener(`click`, () => {
-              superproducts.style.display = `block`
-      
-    
-      cartSurface.style.display = `none`
-              cartButton.style.display=`block`
+productBtn.addEventListener(`click`, () => {
+  superproducts.style.display = `none`;
 
-      })
+  YourOwnProduct.style.display = `block`;
+});
 
-
-
-
-
-const productBtn = document.getElementById(`addProductButton`)
-const productBack = document.getElementById(`ProductBack`)
-const YourOwnProduct = document.querySelector(`.YourOwnProduct`)
-
-      productBtn.addEventListener(`click`, () => {
-              superproducts.style.display = `none`
-      
-    
-      YourOwnProduct.style.display = `block`
-
-
-      })
-    
-
-      productBack.addEventListener(`click`, () => {
-              superproducts.style.display = `block`
-                YourOwnProduct.style.display = `none`  
-      })  
+productBack.addEventListener(`click`, () => {
+  superproducts.style.display = `block`;
+  YourOwnProduct.style.display = `none`;
+});
 
 
 
 
 
-LittleShop();
 
-
+LittleShop()
 
 
 function updateCartAmount() {
-      const AmountSign = document.getElementById(`CartAmount`)
-      const AmountCart = cart.length
-      AmountSign.textContent =`Amount : ${AmountCart}`
+  const AmountSign = document.getElementById(`CartAmount`);
+
+  const AmountCart = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  AmountSign.textContent = `Amount : ${AmountCart}`;
+
 }
 
-
-
-
-const CartTotal = document.getElementById(`CartTotal`)
-let total = 0
+const CartTotal = document.getElementById(`CartTotal`);
+let total = 0;
 
 function TotalRender() {
-  total = 0
-  for(let i = 0; i < cart.length;i++) {
-
-    total = Math.ceil(total + cart[i].price)
-
-    
-
-
+  total = 0;
+  for (let i = 0; i < cart.length; i++) {
+    total = Math.ceil(total + cart[i].price * (cart[i].quantity || 1));
   }
 
-      CartTotal.textContent = `total = $${total}`
+  CartTotal.textContent = `total = $${total}`;
 }
 
+const productForm = document.getElementById("productForm");
 
-
-const productForm = document.getElementById('productForm');
-
-productForm.addEventListener('submit', async (event) => {
+productForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
-  const nameInput = document.getElementById('name');
-  const priceInput = document.getElementById('price');
-  const emailInput = document.getElementById('email');
-  const descriptionInput = document.getElementById('description');
-  const submitButton = document.getElementById('addProductbtn');
-  const formMessage = document.getElementById('formMessage');
+  const nameInput = document.getElementById("name");
+  const priceInput = document.getElementById("price");
+  const emailInput = document.getElementById("email");
+  const descriptionInput = document.getElementById("description");
+  const submitButton = document.getElementById("addProductbtn");
+  const formMessage = document.getElementById("formMessage");
 
-  const nameError = document.getElementById('nameError');
-  const priceError = document.getElementById('priceError');
-  const emailError = document.getElementById('emailError');
-  const descriptionError = document.getElementById('descriptionError');
+  const nameError = document.getElementById("nameError");
+  const priceError = document.getElementById("priceError");
+  const emailError = document.getElementById("emailError");
+  const descriptionError = document.getElementById("descriptionError");
 
-
-  nameError.textContent = '';
-  priceError.textContent = '';
-  emailError.textContent = '';
-  descriptionError.textContent = '';
-  formMessage.textContent = '';
+  nameError.textContent = "";
+  priceError.textContent = "";
+  emailError.textContent = "";
+  descriptionError.textContent = "";
+  formMessage.textContent = "";
 
   let isValid = true;
 
@@ -435,46 +372,46 @@ productForm.addEventListener('submit', async (event) => {
   const description = descriptionInput.value.trim();
 
   if (name.length < 2) {
-    nameError.textContent = 'Name must contain at least 2 characters.';
+    nameError.textContent = "Name must contain at least 2 characters.";
     isValid = false;
   }
 
-  if (priceInput.value === '' || !Number.isFinite(price) || price <= 0) {
-    priceError.textContent = 'Price must be greater than zero.';
+  if (priceInput.value === "" || !Number.isFinite(price) || price <= 0) {
+    priceError.textContent = "Price must be greater than zero.";
     isValid = false;
   }
 
   if (!emailInput.validity.valid) {
-    emailError.textContent = 'Enter a valid email address.';
+    emailError.textContent = "Enter a valid email address.";
     isValid = false;
   }
 
   if (description.length < 10) {
     descriptionError.textContent =
-      'Description must contain at least 10 characters.';
+      "Description must contain at least 10 characters.";
     isValid = false;
   }
 
   if (!isValid) {
-    formMessage.textContent = 'Please fix the errors above.';
+    formMessage.textContent = "Please fix the errors above.";
     return;
   }
 
   submitButton.disabled = true;
-  formMessage.textContent = 'Sending product...';
+  formMessage.textContent = "Sending product...";
 
   try {
-    const res = await fetch('https://dummyjson.com/products/add', {
-      method: 'POST',
+    const res = await fetch("https://dummyjson.com/products/add", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         title: name,
         price: price,
         description: description,
-        email: email
-      })
+        email: email,
+      }),
     });
 
     if (!res.ok) {
@@ -483,14 +420,12 @@ productForm.addEventListener('submit', async (event) => {
 
     const data = await res.json();
 
-    formMessage.textContent =
-      `Product "${data.title}" created successfully. ID: ${data.id}`;
+    formMessage.textContent = `Product "${data.title}" created successfully. ID: ${data.id}`;
 
     productForm.reset();
   } catch (error) {
     console.error(error);
-    formMessage.textContent =
-      'Could not create the product. Please try again.';
+    formMessage.textContent = "Could not create the product. Please try again.";
   } finally {
     submitButton.disabled = false;
   }

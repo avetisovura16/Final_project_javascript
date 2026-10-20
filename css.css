@@ -1,56 +1,54 @@
 body {
-      background-color: #b8c8dc;
-
+  background-color: #b8c8dc;
 }
-
-
-
-
-
 
 #PageNumber {
-    margin: 0;
-    width: 50px;
+  margin: 0;
+  width: 50px;
 }
-
 
 .buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
 }
-
 
 #cartButton {
-    width: 71px;
-    height: 21px;
+  width: 71px;
+  height: 21px;
 }
 
-
 .things {
-    display: flex;
-flex-direction: row;
-gap: 5px;
+  display: flex;
+  flex-direction: row;
+  gap: 100px;
+
+
+
+}
+
+#productForm {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+
 }
 
 #productCard {
-    width:250px;
-    flex-wrap: wrap;
-    background-color: #91adce;
-    padding: 7px;
-    border: 4px solid #6c88a9;
-    border-radius: 10px;
-    gap: 10px;
-
+  width: 250px;
+  flex-wrap: wrap;
+  background-color: #91adce;
+  padding: 7px;
+  border: 4px solid #6c88a9;
+  border-radius: 10px;
+  gap: 10px;
 }
 
 li {
-
-    list-style: none;
+  list-style: none;
 }
 
-
-#productImage{
+#productImage {
   width: 200px;
   height: 200px;
   object-fit: contain;
@@ -58,117 +56,102 @@ li {
 }
 
 #ourproducts {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 #productDesc {
-    width: 200px;
+  width: 200px;
 }
 
-
-
 #titleProduct {
-    font-size: 25px;
-    font-weight: bold;
+  font-size: 25px;
+  font-weight: bold;
 }
 
 p {
-    margin: 0;
-    margin-bottom: 10px;
+  margin: 0;
+  margin-bottom: 10px;
 }
 
 #detailsOfProduct {
-    display: flex;
-    gap: 10px;
-    flex-direction: column;
-
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
 }
 
 #imageDetailProduct {
-    width: 300px;
+  width: 300px;
 }
 
 #imageDetailProduct {
-    border: 4px solid #6c88a9;
-    border-radius: 10px;
+  border: 4px solid #6c88a9;
+  border-radius: 10px;
 }
 
 #goBackButton {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 #BuyButton {
-    width: 150px;
+  width: 150px;
 }
 
 #UlProducts {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 #emptyText {
-    font-weight: bold ;
-    
+  font-weight: bold;
 }
 
 #statusMod {
-    display: flex;
-    position: absolute;
-    right: 10px;
-
+  display: flex;
+  position: absolute;
+  right: 10px;
 }
 
 #pagination {
-    display: flex;
-    gap: 10px;
-    flex-direction: row;
+  display: flex;
+  gap: 10px;
+  flex-direction: row;
 }
 
-
-
-
 .divList {
-    background-color: #92aece;
-    width: 1450px;
-    border-radius: 10px;
-    padding: 20px;
-
+  background-color: #92aece;
+  width: 1450px;
+  border-radius: 10px;
+  padding: 20px;
 }
 
 body.dark {
-    background-color: #161e29;
-    color: #c9d6e5;
+  background-color: #161e29;
+  color: #c9d6e5;
 }
 
 body.dark #productCard,
 body.dark .productCard,
 body.dark .divList {
-    background-color: #0f1620;
-    border-color: #2b3a4d;
+  background-color: #0f1620;
+  border-color: #2b3a4d;
 }
 
 body.dark #imageDetailProduct {
-    border-color: #2b3a4d;
+  border-color: #2b3a4d;
 }
 
 body.dark button,
 body.dark input,
 body.dark select {
-    background-color: #1e2836;
-    color: #c9d6e5;
-    border: 1px solid #6c88a9;
+  background-color: #1e2836;
+  color: #c9d6e5;
+  border: 1px solid #6c88a9;
 }
 
 
-#addProductButton {
-display: flex;  
-position: absolute;
-right: 10px;
-}
 
 .field-error {
   color: #d93025;
@@ -184,13 +167,6 @@ right: 10px;
   opacity: 0.6;
   cursor: not-allowed;
 }
-
-
-
-
-
-
-
 
 @media (max-width: 600px) {
   .things {
@@ -230,10 +206,5 @@ right: 10px;
 
   #addProductButton {
     position: static;
-
   }
-
-
-
 }
-
