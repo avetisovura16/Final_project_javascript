@@ -16,7 +16,7 @@ function render(products) {
         <p>${element.title}</p>
         <p>$ ${element.price}</p>
         <p>% ${element.discountPercentage}</p>
-        <p>⭐ ${element.rating}</p>
+<p> ${element.rating} ${"⭐".repeat(Math.round(element.rating))}</p>
         <p id="productDesc">${element.description}</p>
       </div>
     `;
@@ -58,17 +58,64 @@ async function showProductDetails(id) {
       <p id="titleProduct">${product.title}</p>
       <p>Price: $${product.price}</p>
       <p>Category: ${product.category}</p>
-      <p>Rating: ⭐ ${product.rating}</p>
+      <p>Rating: ${"⭐".repeat(Math.round(product.rating))}</p>
       <p id="stock">
         ${product.stock > 0 ? "In Stock" : "None Left"}
       </p>
       <p>${product.description}</p>
+      
       <p>Tags: ${product.tags.join(", ")}</p>
 
-      <button id="BuyButton">Buy This Product</button>
+
+            <button id="BuyButton">Buy This Product</button>
       <p id="addedToCart" style="display: none;">
         Added to cart!
       </p>
+
+
+            <p style="font-weight: bold; font-size: 25px;">Reviews: </p>
+
+      <div id="reviewSection">
+      
+
+      <p style="font-weight: bold; font-size: 25px;">${product.reviews[0].reviewerName}</p>
+      <p>${product.reviews[0].reviewerEmail}</p>      
+      <p> ${"⭐".repeat(product.reviews[0].rating)}   </p>            
+      <p> ${product.reviews[0].comment}</p>          
+      <p> ${product.reviews[0].date}</p>       
+    
+
+<div id="line"></div>
+      
+
+      <p style="font-weight: bold; font-size: 25px;">${product.reviews[1].reviewerName}</p>
+      <p>${product.reviews[1].reviewerEmail}</p>      
+      <p> ${"⭐".repeat(product.reviews[1].rating)}   </p>            
+      <p> ${product.reviews[1].comment}</p>          
+      <p> ${product.reviews[1].date}</p>       
+
+
+      <div id="line"></div>
+
+            <p style="font-weight: bold; font-size: 25px;">${product.reviews[1].reviewerName}</p>
+      <p>${product.reviews[2].reviewerEmail}</p>      
+      <p> ${"⭐".repeat(product.reviews[2].rating)}   </p>            
+      <p> ${product.reviews[2].comment}</p>          
+      <p> ${product.reviews[2].date}</p>    
+   
+      
+      
+
+
+      </div>
+
+
+
+
+
+
+
+
     `;
 
     const buyBtn = detailPage.querySelector("#BuyButton");
