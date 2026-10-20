@@ -17,6 +17,7 @@ function render(products) {
         <p>$ ${element.price}</p>
         <p>% ${element.discountPercentage}</p>
 <p> ${element.rating} ${"⭐".repeat(Math.round(element.rating))}</p>
+
         <p id="productDesc">${element.description}</p>
       </div>
     `;
@@ -56,6 +57,7 @@ async function showProductDetails(id) {
       >
 
       <p id="titleProduct">${product.title}</p>
+      <p id="brandProduct">Brand: <mark>${product.brand}</mark></p>
       <p>Price: $${product.price}</p>
       <p>Category: ${product.category}</p>
       <p>Rating: ${"⭐".repeat(Math.round(product.rating))}</p>
@@ -78,7 +80,7 @@ async function showProductDetails(id) {
       <div id="reviewSection">
       
 
-      <p style="font-weight: bold; font-size: 25px;">${product.reviews[0].reviewerName}</p>
+      <h1 id="reviewerName">${product.reviews[0].reviewerName}</h1>
       <p>${product.reviews[0].reviewerEmail}</p>      
       <p> ${"⭐".repeat(product.reviews[0].rating)}   </p>            
       <p> ${product.reviews[0].comment}</p>          
@@ -88,7 +90,7 @@ async function showProductDetails(id) {
 <div id="line"></div>
       
 
-      <p style="font-weight: bold; font-size: 25px;">${product.reviews[1].reviewerName}</p>
+      <h1 id="reviewerName">${product.reviews[1].reviewerName}</h1>
       <p>${product.reviews[1].reviewerEmail}</p>      
       <p> ${"⭐".repeat(product.reviews[1].rating)}   </p>            
       <p> ${product.reviews[1].comment}</p>          
@@ -97,7 +99,7 @@ async function showProductDetails(id) {
 
       <div id="line"></div>
 
-            <p style="font-weight: bold; font-size: 25px;">${product.reviews[1].reviewerName}</p>
+            <h1 id="reviewerName" >${product.reviews[1].reviewerName}</h1>
       <p>${product.reviews[2].reviewerEmail}</p>      
       <p> ${"⭐".repeat(product.reviews[2].rating)}   </p>            
       <p> ${product.reviews[2].comment}</p>          
@@ -108,13 +110,6 @@ async function showProductDetails(id) {
 
 
       </div>
-
-
-
-
-
-
-
 
     `;
 
