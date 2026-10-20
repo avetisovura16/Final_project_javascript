@@ -10,6 +10,7 @@ You can change your theme to the dark one anytime.
 <img width="1919" height="1199" alt="image" src="https://github.com/user-attachments/assets/61c20edf-b8b3-49e8-b326-ca9120249173" />
 
 HOW TO OPEN :
+Clone the repository.
 Open `Index.html` in a browser, e.g. via VS Code Live Server.
 
 ENDPOINTS USED :
