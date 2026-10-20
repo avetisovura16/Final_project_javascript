@@ -239,7 +239,10 @@ cartButton.addEventListener(`click`, () => {
 
       <img id="productImage" src="${element.thumbnail}" alt="${element.title}">
       <p> ${element.title} </p>
+      <Div id="ThingsCart">
       <p> $ ${element.price} </p>
+      <p>${"⭐".repeat(Math.round(element.rating))}</p>
+      </div>
       <button> remove </button>
       <button id="increaseQty"> + </button>
       <button id="quantity"> ${element.quantity} </button>
@@ -266,9 +269,14 @@ cartButton.addEventListener(`click`, () => {
     const incBtn = CartLi.querySelector("#increaseQty");
     const decBtn = CartLi.querySelector("#decreaseQty");
 
+    incBtn.disabled = element.quantity >= element.stock;
+
     incBtn.addEventListener("click", () => {
+      if (element.quantity >= element.stock) return;
+
       element.quantity++;
       qtyBtn.textContent = element.quantity;
+      incBtn.disabled = element.quantity >= element.stock;
       localStorage.setItem("myCart", JSON.stringify(cart));
       TotalRender();
       updateCartAmount()
@@ -278,6 +286,7 @@ cartButton.addEventListener(`click`, () => {
       if (element.quantity > 1) {
         element.quantity--;
         qtyBtn.textContent = element.quantity;
+        incBtn.disabled = element.quantity >= element.stock;
         localStorage.setItem("myCart", JSON.stringify(cart));
         TotalRender();
         updateCartAmount()

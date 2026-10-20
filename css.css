@@ -61,6 +61,14 @@ mark {
  
 }
 
+#ThingsCart {
+align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+
+}
+
 #productCard {
   width: 250px;
   flex-wrap: wrap;

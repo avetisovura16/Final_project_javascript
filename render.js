@@ -15,6 +15,7 @@ function render(products) {
         >
         <p>${element.title}</p>
         <p>$ ${element.price}</p>
+        
         <p>% ${element.discountPercentage}</p>
 <p> ${element.rating} ${"⭐".repeat(Math.round(element.rating))}</p>
 
